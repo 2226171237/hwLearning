@@ -115,7 +115,7 @@ Git不适合的领域：
 
   强制回退到历史节点------ `git reset`
 
-  回退本地所有修改而未提交的----- `git checkout`
+  回退本地所有修改而未提交的----- `git checkout . / git checkout -filename / git checkout commit_id`  
 
 * 分支合并：
 
