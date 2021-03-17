@@ -127,6 +127,10 @@ Git不适合的领域：
 
 <img src="imgs/image-20210317150644631.png" alt="image-20210317150644631" style="zoom:80%;" />
 
+`git log -n`:查看前n个commit。
+
+<img src="imgs/image-20210317151707048.png" alt="image-20210317151707048" style="zoom:80%;" />
+
 `git  commit --amend`: 可以修改已经提交commit中的message。
 
 <img src="imgs/image-20210317150821599.png" alt="image-20210317150821599" style="zoom:80%;" />
