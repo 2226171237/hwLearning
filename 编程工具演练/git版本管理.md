@@ -123,3 +123,11 @@ Git不适合的领域：
 
 
 
+`git log --name-status`: 可以打印出每次commit的文件及其状态。A：新添加的，M：修改的，D：删除的
+
+<img src="imgs/image-20210317150644631.png" alt="image-20210317150644631" style="zoom:80%;" />
+
+`git  commit --amend`: 可以修改已经提交commit中的message。
+
+<img src="imgs/image-20210317150821599.png" alt="image-20210317150821599" style="zoom:80%;" />
+
