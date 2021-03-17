@@ -101,6 +101,10 @@ Git不适合的领域：
 
   列出本地分支------ `git branch`
 
+  列出远端分支------ `git branch -r`
+
+  列出远端和本地分支------ `git branch -a`
+
   新建分支------ `git branch / git checkout -b`
 
   删除分支------ `git branch -d`
@@ -134,4 +138,14 @@ Git不适合的领域：
 `git  commit --amend`: 可以修改已经提交commit中的message。
 
 <img src="imgs/image-20210317150821599.png" alt="image-20210317150821599" style="zoom:80%;" />
+
+分支合并：git merge 和 git rebase的差别：
+
+* git merge: 将两个分支节点合并为一个新的节点，合并后存在分支路径。
+
+<img src="imgs/image-20210317153056741.png" alt="image-20210317153056741" style="zoom:80%;" /> <img src="imgs/image-20210317153115673.png" alt="image-20210317153115673" style="zoom:80%;" />
+
+* git rebase: 将一个分支节点重新建立新的节点，连在另一分支节点的后面，合并为一个路径，日志可读性差。**慎用**。
+
+<img src="imgs/image-20210317153137567.png" alt="image-20210317153137567" style="zoom:80%;" />
 
