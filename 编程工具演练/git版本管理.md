@@ -111,7 +111,7 @@ Git不适合的领域：
 
   切换分支------ `git checkout`
 
-  更新分支------ `git pull`
+  更新分支（远端分支和本地分支合并更新）------ `git pull = git fetch + git  merge`
 
   合并分支------ `git merge`
 
@@ -131,19 +131,19 @@ Git不适合的领域：
 
 <img src="imgs/image-20210317150644631.png" alt="image-20210317150644631" style="zoom:80%;" />
 
-<<<<<<< HEAD
-=======
+
+
 `git log -n`:查看前n个commit。
 
 <img src="imgs/image-20210317151707048.png" alt="image-20210317151707048" style="zoom:80%;" />
 
->>>>>>> liyajie/test1
+
 `git  commit --amend`: 可以修改已经提交commit中的message。
 
 <img src="imgs/image-20210317150821599.png" alt="image-20210317150821599" style="zoom:80%;" />
 
-<<<<<<< HEAD
-=======
+
+
 分支合并：git merge 和 git rebase的差别：
 
 * git merge: 将两个分支节点合并为一个新的节点，合并后存在分支路径。
@@ -154,4 +154,5 @@ Git不适合的领域：
 
 <img src="imgs/image-20210317153137567.png" alt="image-20210317153137567" style="zoom:80%;" />
 
->>>>>>> liyajie/test1
+
+
