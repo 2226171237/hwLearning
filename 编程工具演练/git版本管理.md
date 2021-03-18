@@ -97,6 +97,8 @@ Git不适合的领域：
 
   查看当前分支上的提交日志------ `git log`
 
+  查看历史git操作------ `git reflog`
+
 * 分支管理：
 
   列出本地分支------ `git branch`
@@ -117,11 +119,11 @@ Git不适合的领域：
 
 * 撤销操作：
 
-  强制回退到历史节点------ `git reset  --hard commit_id`
+  强制回退到历史节点------ `git reset  --hard commit_id`  
 
-  回退本地所有修改而未提交的----- `git checkout . / git checkout -filename / git checkout commit_id`  
+  回退本地所有修改而未提交的----- `git checkout . / git checkout filename / git checkout commit_id`  
 
-* 分支合并：
+* 分支合并：git
 
   合并目标分支内容到当前分支------ `git merge / get rebase`
 
