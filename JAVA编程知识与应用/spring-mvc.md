@@ -289,3 +289,614 @@ public class HelloController implements Controller {
 11. DispatcherServlt根据视图解析器解析的视图结果，调用具体的视图
 12. 最终视图呈现给用户。
 
+## 5. 注解开发
+
+1. 配置spring启动配置文件 springmvc-servlet.xml
+
+   ```xml
+   <context:component-scan base-package="com.liyajie.controller"/>
+   
+   <!--让spring mvc不处理静态资源-->
+   <mvc:default-servlet-handler/>
+   
+   <!--
+       支持mvc注解驱动
+           在spring中一般采用@RequestMapping注解来完成映射关系
+           要想使@RequestMapping注解生效
+           必须向上下文中注册DefaultAnnotationHandlerMapping
+           和一个AnnotationAdapter实例
+           这两个实例分别在类级别和方法级别处理
+           而annotation-driven配置帮助我们自动完成上述两个实例的注入
+       -->
+   <mvc:annotation-driven/>
+   
+   <!--视图解析器-->
+   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
+       <property name="prefix" value="/WEB-INF/jsp/"/>
+       <property name="suffix" value=".jsp"/>
+   </bean>
+   ```
+
+2. 配置web.xml
+
+```xml
+<servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+```
+
+3. Hellocontroller.java
+
+   ```java
+   @Controller
+   public class HelloController {
+   
+       // 真实访问的地址： /hello
+       @RequestMapping("/hello")
+       public String sayHello(Model model){
+           model.addAttribute("msg","HELLO SPRING MVC");
+           return "hello"; // 返回的字符串会被视图解析器处理
+       }
+   }
+   ```
+
+4. hello.jsp
+
+   ```jsp
+   <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+   <html>
+   <head>
+       <title>Title</title>
+   </head>
+   <body>
+   ${msg}
+   </body>
+   </html>
+   ```
+
+## 6. Controller配置总结
+
+* Controller 负责提供访问应用程序的行为，通常通过接口定义或者注解定义两种方式实现。
+* 负责解析用户的请求，并将其转换为一个模型
+* Controller中可以对应多个方法
+
+1. 实现Controller接口
+
+   ```java
+   // 实现改接口获得控制器的功能
+   public interface Controller {
+       // 处理请求，且返回一个模型与视图的对象
+       ModelAndView handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception;
+   }
+   ```
+
+   编写一个ControllerTest 类，实现该接口
+
+   ```java
+   public class ControllerTest01 implements Controller {
+       @Override
+       public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+           ModelAndView modelAndView = new ModelAndView();
+           modelAndView.addObject("msg", "Hello Spring MVC");
+           modelAndView.setViewName("hello");
+           return modelAndView;
+       }
+   }
+   ```
+
+   springmvc-servlet.xml增加bean:
+
+   ```
+   <bean id="/t1" class="com.liyajie.controller.ControllerTest01"/>
+   ```
+
+   测试：
+
+   http://localhost:8080/t1
+
+   <img src="imgs/image-20220109004342439.png" alt="image-20220109004342439" style="zoom:80%;" />
+
+   缺点：
+
+   * 一个控制器只能写一个请求处理方法。
+
+2. 使用@Controller注解
+
+   ```java
+   @Controller
+   public class HelloController {
+   
+       // 真实访问的地址： /hello
+       @RequestMapping("/hello")
+       public String sayHello(Model model){
+           model.addAttribute("msg","HELLO SPRING MVC");
+           return "hello"; // 返回的字符串会被视图解析器处理
+       }
+   }
+   ```
+
+## 7. RequestMapping
+
+作用：映射URL到控制器或一个特定的方法上，可用于类或方法上，用于类表示所有响应请求的方法都是以该地址作为父地址。
+
+```java
+@Controller
+@RequestMapping("/say")
+public class HelloController {
+
+    // 真实访问的地址： /say/hello
+    @RequestMapping("/hello")
+    public String sayHello(Model model){
+        model.addAttribute("msg","HELLO SPRING MVC say hello");
+        return "hello"; // 返回的字符串会被视图解析器处理
+    }
+    
+     // 真实访问的地址： /say/bye
+    @RequestMapping("/bye")
+    public String sayBye(Model model){
+        model.addAttribute("msg","HELLO SPRING MVC say bye");
+        return "bye"; // 返回的字符串会被视图解析器处理
+    }
+}
+```
+
+## 8. SSM:Spring-Spring-MVC-Mybatis
+
+### 8.1 Mybatis层
+
+1. 建立mysql数据库：
+
+   ```sql
+   CREATE DATABASE `ssmbuild`;
+   
+   USE `ssmbuild`;
+   
+   DROP TABLE IF EXISTS `books`;
+   
+   CREATE TABLE `books`(
+   	`bookID` INT(10) NOT NULL AUTO_INCREMENT,
+   	`bookName` VARCHAR(100) NOT NULL,
+   	`bookCount` INT(11) NOT NULL,
+   	`detail` VARCHAR(200) NOT NULL,
+   	KEY `bookID` (`bookID`)
+   ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+   
+   INSERT  INTO `books` (`bookID`,`bookName`,`bookCount`,`detail`) VALUES
+   (1, 'Java' , 1, "从入门到放弃"),
+   (2,'MySQL',10,"从删库到跑路"),
+   (3,'Linux',5,"从入门到入狱");
+   ```
+
+2. 搭建基本环境
+
+   * 导入依赖
+
+     ```xml
+     <!--数据库驱动-->
+     <dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <version>5.1.47</version>
+     </dependency>
+     <!--数据库连接池-->
+     <dependency>
+         <groupId>com.mchange</groupId>
+         <artifactId>c3p0</artifactId>
+         <version>0.9.5.2</version>
+     </dependency>
+     <!--mybatis-->
+     <dependency>
+         <groupId>org.mybatis</groupId>
+         <artifactId>mybatis</artifactId>
+         <version>3.5.2</version>
+     </dependency>
+     <dependency>
+         <groupId>org.mybatis</groupId>
+         <artifactId>mybatis-spring</artifactId>
+         <version>2.0.2</version>
+     </dependency>
+     <!--Spring-->
+     <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-webmvc</artifactId>
+         <version>5.2.0.RELEASE</version>
+     </dependency>
+     <dependency>
+         <groupId>org.springframework</groupId>
+         <artifactId>spring-jdbc</artifactId>
+         <version>5.2.0.RELEASE</version>
+     </dependency>
+     <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.12</version>
+         <scope>test</scope>
+     </dependency>
+     <!--servlet-->
+     <dependency>
+         <groupId>javax.servlet</groupId>
+         <artifactId>javax.servlet-api</artifactId>
+         <version>4.0.1</version>
+     </dependency>
+     <dependency>
+         <groupId>javax.servlet.jsp</groupId>
+         <artifactId>javax.servlet.jsp-api</artifactId>
+         <version>2.3.3</version>
+     </dependency>
+     <dependency>
+         <groupId>javax.servlet.jsp.jstl</groupId>
+         <artifactId>jstl-api</artifactId>
+         <version>1.2</version>
+     </dependency>
+     ```
+
+   * IDEA连接数据库
+
+     <img src="imgs/image-20220110235608603.png" alt="image-20220110235608603" style="zoom:80%;" />
+
+   <img src="imgs/image-20220110235706613.png" alt="image-20220110235706613" style="zoom:80%;" />
+
+   <img src="imgs/image-20220110235740483.png" alt="image-20220110235740483" style="zoom:80%;" />
+
+   * resources中新增数据库配置文件database.properties
+
+     ```properties
+     jdbc.driver=com.mysql.jdbc.Driver
+     # 如果使用的使MySQL8.0+还要增加一个时区的配置 &serverTimezone=Asia/Shanghai
+     jdbc.url=jdbc:mysql://localhost:3306/ssmbuild?useSSL=true&useUnicode=true&characterEncoding=utf8
+     jdbc.username=root
+     jdbc.password=
+     ```
+
+   * 在resources中增加mybatis-config.xml 的mybatis配置文件
+
+     1. mybatis-config.xml
+
+     ```xml
+     <?xml version="1.0" encoding="utf8" ?>
+     <!DOCTYPE configuration
+             PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+             "http://mybatis.org/dtd/mybatis-3-config.dtd">
+     
+     <!--核心配置-->
+     <configuration>
+         <!--配置数据源，交给了spring去做了，这里不需要了-->
+         <typeAliases>
+             <package name="com.liyajie.pojo"/>
+         </typeAliases>
+     
+         <mappers>
+             <mapper class="com.liyajie.dao.BookMapper"/>
+         </mappers>
+     </configuration>
+     ```
+
+   * pojo实体类 Books.java
+
+     ```java
+     public class Books {
+         private int bookID;
+         private String bookName;
+         private int bookCount;
+         private String detail;
+     }
+     ```
+
+   * Dao层Mapper 接口， BookMapper.java
+
+     ```java
+     public interface BookMapper {
+         // 增加一本书
+         int addBook(Books books);
+     
+         // 删除一本书
+         int deleteBookById(@Param("bookID") int id);
+     
+         // 更新一本书
+         int updateBook(Books books);
+     
+         // 查询一本书
+         Books queryBookById(@Param("bookID") int id);
+     
+         // 查询所有的书
+         List<Books> queryAllBooks();
+     }
+     ```
+
+   * 在 BookMapper.java同路径下，写 BookMapper.xml
+
+     ```xml
+     <?xml version="1.0" encoding="utf8" ?>
+     <!DOCTYPE mapper
+             PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+             "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+     <mapper namespace="com.liyajie.dao.BookMapper">
+         <insert id="addBook" parameterType="com.liyajie.pojo.Books">
+             insert into ssmbuild.books (bookName, bookCount, detail)
+             values (#{bookName}, #{bookCount}, #{detail})
+         </insert>
+     
+         <delete id="deleteBookById" parameterType="int">
+             delete
+             from ssmbuild.books
+             where bookID = #{bookID}
+         </delete>
+     
+         <update id="updateBook" parameterType="com.liyajie.pojo.Books">
+             update ssmbuild.books
+             set bookName=#{bookName},
+                 bookCount=#{bookCount},
+                 detail=#{detail}
+             where bookID = #{bookID}
+         </update>
+     
+         <select id="queryBookById" resultType="com.liyajie.pojo.Books" parameterType="int">
+             select *
+             from ssmbuild.books
+             where bookID = #{bookID}
+         </select>
+     
+         <select id="queryAllBooks" resultType="com.liyajie.pojo.Books">
+             select *
+             from ssmbuild.books
+         </select>
+     </mapper>
+     ```
+
+   * service层接口定义：
+
+     ```java
+     public interface BookService {
+         // 增加一本书
+         int addBook(Books books);
+     
+         // 删除一本书
+         int deleteBookById(int id);
+     
+         // 更新一本书
+         int updateBook(Books books);
+     
+         // 查询一本书
+         Books queryBookById(int id);
+     
+         // 查询所有的书
+         List<Books> queryAllBooks();
+     }
+     ```
+
+   * service实现类
+
+     ```java
+     public class BookServiceImpl implements BookService {
+         @Setter
+         private BookMapper bookMapper;
+     
+         @Override
+         public int addBook(Books book) {
+             return bookMapper.addBook(book);
+         }
+     
+         @Override
+         public int deleteBookById(int id) {
+             return bookMapper.deleteBookById(id);
+         }
+     
+         @Override
+         public int updateBook(Books book) {
+             return bookMapper.updateBook(book);
+         }
+     
+         @Override
+         public Books queryBookById(int id) {
+             return bookMapper.queryBookById(id);
+         }
+     
+         @Override
+         public List<Books> queryAllBooks() {
+             return bookMapper.queryAllBooks();
+         }
+     }
+     ```
+
+### 8.2 Spring层
+
+1. 在resources下增加spring配置文件spring-dao.xml, spring整合mybatis
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:context="http://www.springframework.org/schema/context"
+          xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+   
+       <!--1.关联数据库配置文件-->
+       <context:property-placeholder location="classpath:database.properties"/>
+   
+       <!--2. 数据库连接池
+           dbcp  半自动化操作，不能自动连接
+           c3p0   自动化操作，自动加载配置文件，并可以自动设置到对象中
+           druid
+           hikari
+       -->
+       <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+           <property name="driverClass" value="${jdbc.driver}"/>
+           <property name="jdbcUrl" value="${jdbc.url}"/>
+           <property name="user" value="${jdbc.username}"/>
+           <property name="password" value="${jdbc.password}"/>
+           <!--c3p0连接池私有属性-->
+           <property name="maxPoolSize" value="30"/>
+           <property name="minPoolSize" value="10"/>
+           <!--关闭连接后不自动commit-->
+           <property name="autoCommitOnClose" value="false"/>
+           <!--获取连接超时时间-->
+           <property name="checkoutTimeout" value="10000"/>
+           <!--当获取连接失败时，重试次数-->
+           <property name="acquireRetryAttempts" value="2"/>
+       </bean>
+       
+       <!--3. sqlSessionFactory-->
+       <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+           <property name="dataSource" ref="dataSource"/>
+           <property name="configLocation" value="classpath:mybatis-config.xml"/>
+       </bean>
+   
+       <!--配置dao接口扫描，动态的实现dao接口注入到Spring容器中-->
+       <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+           <!--注入sqlSessionFactory-->
+           <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+           <!--扫描的dao包-->
+           <property name="basePackage" value="com.liyajie.dao"/>
+       </bean>
+   </beans>
+   ```
+
+2. spring整合service层，在resources下增加spring-service.xml
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:context="http://www.springframework.org/schema/context"
+          xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+   
+       <!--扫描service的包-->
+       <context:component-scan base-package="com.liyajie.service"/>
+   
+       <!--所有业务类注入到spring，可以通过配置，或者注解实现-->
+       <bean class="com.liyajie.service.BookServiceImpl" id="bookService">
+           <property name="bookMapper" value="bookMapper"/>
+       </bean>
+   
+       <!--声明事务配置-->
+       <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+           <property name="dataSource" ref="dataSource"/>
+       </bean>
+   </beans>
+   ```
+
+   还需要在resources/applicationContext.xml中关联两个xml文件
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <import resource="classpath:spring-dao.xml"/>
+       <import resource="classpath:spring-service.xml"/>
+   </beans>
+   ```
+
+### 8.3 Spring-MVC层
+
+1. 增加web项目的支持
+
+2. web.xml配置
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+            version="4.0">
+       
+       <servlet>
+           <servlet-name>springmvc</servlet-name>
+           <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+           <init-param>
+               <param-name>contextConfigLocation</param-name>
+               <param-value>classpath:spring-mvc.xml</param-value>
+           </init-param>
+           <load-on-startup>1</load-on-startup>
+       </servlet>
+       
+       <servlet-mapping>
+           <servlet-name>springmvc</servlet-name>
+           <url-pattern>/</url-pattern>
+       </servlet-mapping>
+       
+       <!--乱码过滤-->
+       <filter>
+           <filter-name>encodingFilter</filter-name>
+           <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+           <init-param>
+               <param-name>encoding</param-name>
+               <param-value>utf-8</param-value>
+           </init-param>
+       </filter>
+       <filter-mapping>
+           <filter-name>encodingFilter</filter-name>
+           <url-pattern>/*</url-pattern>
+       </filter-mapping>
+   
+       <!--session过期时间-->
+       <session-config>
+           <session-timeout>10000</session-timeout>
+       </session-config>
+   </web-app>
+   ```
+
+3. spring-mvc.xml配置
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+          xmlns:context="http://www.springframework.org/schema/context"
+          xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+   
+       <!--1. 注解驱动-->
+       <mvc:annotation-driven/>
+   
+       <!--2. 静态资源过滤-->
+       <mvc:default-servlet-handler/>
+   
+       <!--3. 扫描包： controller-->
+       <context:component-scan base-package="com.liyajie.controller"/>
+   
+       <!--4. 视图解析器-->
+       <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" id="internalResourceViewResolver">
+           <property name="prefix" value="/WEB-INF/jps/"/>
+           <property name="suffix" value=".jsp"/>
+       </bean>
+   
+   </beans>
+   ```
+
+4. 整合spring配置文件applicationContext.xml
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <import resource="classpath:spring-dao.xml"/>
+       <import resource="classpath:spring-service.xml"/>
+       <import resource="classpath:spring-mvc.xml"/>
+   </beans>
+   ```
+
+   

@@ -1,0 +1,195 @@
+HTTP/1.1 100 Continue
+
+POST /openacs/acs HTTP/1.1
+Host: localhost:8080
+User-Agent: easycwmp
+Content-Type: text/xml; charset="utf-8"
+SOAPAction:
+Content-Length: 2713
+Expect: 100-continue
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <soap_env:Envelope
+xmlns:soap_env="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:soap_enc="http://schemas.xmlsoap.org/soap/encoding/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:cwmp="urn:dslforum-org:cwmp-1-2">
+  <soap_env:Header>
+   <cwmp:ID soap_env:mustUnderstand="1">1</cwmp:ID>
+  </soap_env:Header>
+  <soap_env:Body>
+   <cwmp:Inform>
+    <DeviceId>
+     <Manufacturer>easycwmp</Manufacturer>
+     <OUI>FFFFFF</OUI>
+     <ProductClass>easycwmp</ProductClass>
+     <SerialNumber>FFFFFF123456</SerialNumber>
+    </DeviceId>
+    <Event soap_enc:arrayType="cwmp:EventStruct[1]">
+     <EventStruct>
+      <EventCode>1 BOOT</EventCode>
+      <CommandKey />
+     </EventStruct>
+    </Event>
+    <MaxEnvelopes>1</MaxEnvelopes>
+    <CurrentTime>2022-02-22T08:16:10-08:00</CurrentTime>
+    <RetryCount>0</RetryCount>
+    <ParameterList soap_enc:arrayType="cwmp:ParameterValueStruct[10]">
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SpecVersion</Name>
+      <Value xsi:type="xsd:string">1.0</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ProvisioningCode</Name>
+      <Value xsi:type="xsd:string"></Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.Manufacturer</Name>
+      <Value xsi:type="xsd:string">easycwmp</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ManufacturerOUI</Name>
+      <Value xsi:type="xsd:string">FFFFFF</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ProductClass</Name>
+      <Value xsi:type="xsd:string">easycwmp</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SerialNumber</Name>
+      <Value xsi:type="xsd:string">FFFFFF123456</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.HardwareVersion</Name>
+      <Value xsi:type="xsd:string">example_hw_version</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SoftwareVersion</Name>
+      <Value xsi:type="xsd:string">example_sw_version</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.ManagementServer.ConnectionRequestURL</Name>
+      <Value xsi:type="xsd:string"></Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.ManagementServer.ParameterKey</Name>
+      <Value xsi:type="xsd:string">unsetCommandKey</Value>
+     </ParameterValueStruct>
+    </ParameterList>
+   </cwmp:Inform>
+  </soap_env:Body>
+ </soap_env:Envelope>
+HTTP/1.1 401 Unauthorized
+Server: Apache-Coyote/1.1
+X-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710221139)/Tomcat-5.5
+Set-Cookie: JSESSIONID=1EB8C9FBB93F6C06AAFF7A56EE7C42EE; Path=/
+WWW-Authenticate: Basic realm="OpenACS"
+Content-Type: text/html;charset=utf-8
+Content-Length: 948
+Date: Tue, 22 Feb 2022 16:16:11 GMT
+
+<html><head><title>JBossWeb/2.0.1.GA - Error report</title><style><!--H1 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:22px;} H2 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:16px;} H3 {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;font-size:14px;} BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;} B {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#525D76;} P {font-family:Tahoma,Arial,sans-serif;background:white;color:black;font-size:12px;}A {color : black;}A.name {color : black;}HR {color : #525D76;}--></style> </head><body><h1>HTTP Status 401 - </h1><HR size="1" noshade="noshade"><p><b>type</b> Status report</p><p><b>message</b> <u></u></p><p><b>description</b> <u>This request requires HTTP authentication ().</u></p><HR size="1" noshade="noshade"><h3>JBossWeb/2.0.1.GA</h3></body></html>HTTP/1.1 100 Continue
+
+POST /openacs/acs HTTP/1.1
+Host: localhost:8080
+Authorization: Basic b3BlbmFjczpvcGVuYWNz
+Cookie: JSESSIONID=1EB8C9FBB93F6C06AAFF7A56EE7C42EE
+User-Agent: easycwmp
+Content-Type: text/xml; charset="utf-8"
+SOAPAction:
+Content-Length: 2713
+Expect: 100-continue
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <soap_env:Envelope
+xmlns:soap_env="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:soap_enc="http://schemas.xmlsoap.org/soap/encoding/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:cwmp="urn:dslforum-org:cwmp-1-2">
+  <soap_env:Header>
+   <cwmp:ID soap_env:mustUnderstand="1">1</cwmp:ID>
+  </soap_env:Header>
+  <soap_env:Body>
+   <cwmp:Inform>
+    <DeviceId>
+     <Manufacturer>easycwmp</Manufacturer>
+     <OUI>FFFFFF</OUI>
+     <ProductClass>easycwmp</ProductClass>
+     <SerialNumber>FFFFFF123456</SerialNumber>
+    </DeviceId>
+    <Event soap_enc:arrayType="cwmp:EventStruct[1]">
+     <EventStruct>
+      <EventCode>1 BOOT</EventCode>
+      <CommandKey />
+     </EventStruct>
+    </Event>
+    <MaxEnvelopes>1</MaxEnvelopes>
+    <CurrentTime>2022-02-22T08:16:10-08:00</CurrentTime>
+    <RetryCount>0</RetryCount>
+    <ParameterList soap_enc:arrayType="cwmp:ParameterValueStruct[10]">
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SpecVersion</Name>
+      <Value xsi:type="xsd:string">1.0</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ProvisioningCode</Name>
+      <Value xsi:type="xsd:string"></Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.Manufacturer</Name>
+      <Value xsi:type="xsd:string">easycwmp</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ManufacturerOUI</Name>
+      <Value xsi:type="xsd:string">FFFFFF</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.ProductClass</Name>
+      <Value xsi:type="xsd:string">easycwmp</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SerialNumber</Name>
+      <Value xsi:type="xsd:string">FFFFFF123456</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.HardwareVersion</Name>
+      <Value xsi:type="xsd:string">example_hw_version</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.DeviceInfo.SoftwareVersion</Name>
+      <Value xsi:type="xsd:string">example_sw_version</Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.ManagementServer.ConnectionRequestURL</Name>
+      <Value xsi:type="xsd:string"></Value>
+     </ParameterValueStruct>
+     <ParameterValueStruct>
+      <Name>Device.ManagementServer.ParameterKey</Name>
+      <Value xsi:type="xsd:string">unsetCommandKey</Value>
+     </ParameterValueStruct>
+    </ParameterList>
+   </cwmp:Inform>
+  </soap_env:Body>
+ </soap_env:Envelope>
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+X-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710221139)/Tomcat-5.5
+Content-Type: text/xml;charset=utf-8
+Content-Length: 565
+Date: Tue, 22 Feb 2022 16:16:11 GMT
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cwmp="urn:dslforum-org:cwmp-1-0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><SOAP-ENV:Header><cwmp:ID SOAP-ENV:mustUnderstand="1">1</cwmp:ID><cwmp:NoMoreRequests>0</cwmp:NoMoreRequests></SOAP-ENV:Header><SOAP-ENV:Body><cwmp:InformResponse xmlns:cwmp="urn:dslforum-org:cwmp-1-0"><MaxEnvelopes>1</MaxEnvelopes></cwmp:InformResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>POST /openacs/acs HTTP/1.1
+Host: localhost:8080
+Authorization: Basic b3BlbmFjczpvcGVuYWNz
+Cookie: JSESSIONID=1EB8C9FBB93F6C06AAFF7A56EE7C42EE
+User-Agent: easycwmp
+Content-Type: text/xml; charset="utf-8"
+Content-Length: 0
+
+HTTP/1.1 204 No Content
+Server: Apache-Coyote/1.1
+X-Powered-By: Servlet 2.4; JBoss-4.2.2.GA (build: SVNTag=JBoss_4_2_2_GA date=200710221139)/Tomcat-5.5
+Date: Tue, 22 Feb 2022 16:16:11 GMT
+
