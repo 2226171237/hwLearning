@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CreateRef REFS属性</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 引入类型限制-->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建类式组件
+        class Demo extends React.Component {
+            // ref容器是专人专用的，只能存一个ref
+            myRef=React.createRef();
+           
+            // props 是只读的，不允许改
+            show = () => {
+                alert(this.myRef.current.value)
+            }
+
+            // 事件发生时传入event事件
+            show2 = (event) => {
+                // target为事件源，是谁发起的事件
+                const input = event.target;
+                alert(input.value)
+            }
+            
+            inputSave = (input)=>{
+                this.input1=input
+                console.log('@' + input)
+            }
+
+            render() {
+                // ref={this.myRef} 就会将当前组件存到myRef容器里
+                return (
+                    <div>
+                        <input ref={this.myRef} type="text" placeholder="点击按钮提交" />
+                        <button onClick={this.show}>点我提交</button>
+                        <input onBlur={this.show2} type="text" placeholder="失去焦点提交" />
+                    </div>
+                )
+            }
+        }
+
+
+        //渲染组件到页面
+        ReactDOM.render(<Demo />, document.getElementById('test'))
+
+    </script>
+</body>
+
+</html>

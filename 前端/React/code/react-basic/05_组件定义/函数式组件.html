@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>函数式组件定义</title>
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建函数式组件
+        function Demo() {
+            return <h1>我是使用函数式定义的组件</h1>
+        }
+        
+        //渲染组件到页面
+        ReactDOM.render(<Demo/>,document.getElementById('test'))
+    </script>
+</body>
+
+</html>

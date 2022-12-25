@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件生命周期</title>
+    <style>
+        .list {
+            width: 200px;
+            height: 150px;
+            background-color: skyblue;
+            overflow: auto;
+        }
+
+        .news {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/17.0/react.development.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/17.0/react-dom.development.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 引入类型限制-->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <!--
+        非受控组件：现用现取，使用大量的ref
+        受控组件：组件变化时，自己将值刷新到状态里，其他组件使用时，只要从状态里取即可，没有大量的ref.
+    -->
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建类式组件
+        class NewsList extends React.Component {
+
+            state = {
+                newsArray: [],
+            }
+
+            // 更新DOM之前，获取旧的DOM的快照，比如之前DOM的宽度，高度，或者滚轮位置等
+            getSnapshotBeforeUpdate(oldProps, oldState) {
+                return this.refs.list.scrollHeight;
+            }
+
+            // 组件更新完毕
+            componentDidUpdate(oldProps, oldState, height) {
+                // 设置新的DOM的属性
+                this.refs.list.scrollTop += this.refs.list.scrollHeight - height
+            }
+
+            componentDidMount() {
+                setInterval(() => {
+                    const { newsArray } = this.state;
+                    const news = '新闻' + (newsArray.length + 1)
+                    this.setState({
+                        newsArray: [news, ...newsArray]
+                    })
+                }, 1000)
+            }
+            // 初始化渲染和状态更新调用 1+n
+            render() {
+                return (
+                    <div className='list' ref='list'>
+                        {
+                            this.state.newsArray.map((n, index) => {
+                                return <div key={index} className='news'>{n}</div>
+                            })
+                        }
+                    </div>
+                )
+            }
+        }
+
+        //渲染组件到页面
+        ReactDOM.render(<NewsList />, document.getElementById('test'))
+
+    </script>
+</body>
+
+</html>

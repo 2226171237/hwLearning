@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单学习</title>
+</head>
+<body>
+登录注册：<br>
+<!-- 表单学习
+method: post、get
+action: 可以时一个网站，也可以是一个api接口
+-->
+<form method="get" action="1.我的第一个网页.html">
+    <!--input: name为提交时变量名，type为输入框类型-->
+    <p>名字：<input type="text" name="username" value="admin" maxlength="8"></p>
+    <p>密码：<input type="password" name="password"></p>
+    <!--单选框-->
+    <p>性别：
+        <!--同一组内的选项的name值要一样-->
+        <input type="radio" name="sex" value="boy">男
+        <input type="radio" name="sex" value="girl">女
+    </p>
+    <!--多选框-->
+    <p>爱好：
+        <!--同一组内的选项的name值要一样-->
+        <input type="checkbox" name="hobby" value="sleep">睡觉
+        <input type="checkbox" name="hobby" value="codding">写代码
+        <input type="checkbox" name="hobby" value="chat">聊天
+    </p>
+    <!--按钮-->
+    <p>按钮：
+        <input type="button" name="bt1" value="点击变长">
+        <input type="image" src="https://liyajieimgs.oss-cn-nanjing.aliyuncs.com/imgs/LuffyQ.png">
+    </p>
+
+    <!--下拉框-->
+    <p>
+        国家：
+        <select name="country" >
+            <!--selected 表示默认被选择-->
+            <option value="china" selected>中国</option>
+            <option value="us">美国</option>
+            <option value="english">日本</option>
+        </select>
+    </p>
+    <!--文本域，多行文本-->
+    <p>
+        描述：
+        <textarea name="desp" cols="100" rows="10">简单描述......</textarea>
+    </p>
+    <!--文件域-->
+    <p>
+        选择文件：
+        <input type="file" name="file">
+        <input type="button" name="upload" value="上传">
+    </p>
+    <!--邮件验证，点击提交时会验证邮箱-->
+    <p>邮件：<input type="email" name="email"></p>
+    <!--URL验证，点击提交时会验证URL-->
+    <p>URL：<input type="url" name="url"></p>
+    <!--数字验证-->
+    <p>数字：<input type="number" name="count" min="0" max="100" step="10"></p>
+    <!--滑块-->
+    <p>滑块：<input type="range" name="range" min="0" max="100" step="10"></p>
+    <!--搜素-->
+    <p>搜索：<input type="search" name="search"></p>
+    <!--只读 readonly属性-->
+    <p>只读：<input type="text" name="readonly" value="readonly" readonly></p>
+    <!--禁用 disabled属性-->
+    <p>禁用：<input type="button" name="disable" value="disabled" disabled></p>
+    <!--隐藏 hidden属性 不显示，但是还存在-->
+    <p>隐藏：<input type="text" name="hidden" value="hidden" hidden></p>
+    <!--鼠标增强可用性，label标签 for属性指向标签id， 当点击label时则光标在输入框内-->
+    <p>
+        <label for="mark">你点我试试</label>
+        <input  id="mark" type="text" name="labelinput">
+    </p>
+    <!--提示信息-->
+    <p>提示信息：<input type="text" name="plc" placeholder="请输入..."></p>
+    <!--不为空-->
+    <p>不为空：<input type="text" name="required" required></p>
+    <!--正则校验-->
+    <p>正则校验-只能输入小写字母：<input type="text" name="part" value="" pattern="[a-z]+"></p>
+    <p>
+        <input type="submit">
+        <input type="reset">
+    </p>
+</form>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Props属性</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 引入类型限制-->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建函数式组件 组件的属性全都拼成了props作为函数参数
+        function Person(props) {
+            return (
+                <ul>
+                    <li>姓名：{props.name}</li>
+                    <li>性别：{props.sex}</li>
+                    <li>年龄：{props.age}</li>
+                </ul>
+            )
+        }
+        // props类型限制
+        Person.propTypes = {
+            name: PropTypes.string.isRequired,
+            sex: PropTypes.string,
+            age: PropTypes.int,
+            speak: PropTypes.func
+        }
+
+        // props默认值 类外的Person.defaultProps的类内写法，给类属性
+        Person.defaultProps = {
+            sex: "男",
+            age: 19,
+        }
+
+
+        //渲染组件到页面
+        const data = { name: 'Tom', sex: 12, speak: speak };
+        ReactDOM.render(<Person {...data} />, document.getElementById('test'))
+        ReactDOM.render(<Person name="Jim" sex={12} age={18} />, document.getElementById('test'))
+
+        function speak() {
+            console.log("speak....");
+        }
+    </script>
+</body>
+
+</html>

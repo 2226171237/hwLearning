@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>字符串型REFS属性</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 引入类型限制-->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建类式组件
+        class Demo extends React.Component {
+            // props 是只读的，不允许改
+            show = () => {
+                const { input1 } = this.refs;
+                alert(input1.value)
+            }
+            show2 = () => {
+                const { input2 } = this.refs;
+                alert(input2.value)
+            }
+            render() {
+                return (
+                    <div>
+                        <input ref="input1" type="text" placeholder="点击按钮提交" />
+                        <button onClick={this.show}>点我提交</button>
+                        <input ref="input2" onBlur={this.show2} type="text" placeholder="点失去焦点提交" />
+                    </div>
+                )
+            }
+        }
+
+
+        //渲染组件到页面
+        ReactDOM.render(<Demo />, document.getElementById('test'))
+
+    </script>
+</body>
+
+</html>

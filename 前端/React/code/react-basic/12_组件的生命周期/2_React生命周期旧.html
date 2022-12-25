@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件生命周期</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/react.production.min.js"></script>
+    <!-- 引入react-dom 用于支持react操作dom -->
+    <script type="text/javascript" src="../js/react-dom.production.min.js"></script>
+    <!-- y引入babel 用于将jsx转为js -->
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <!-- 引入类型限制-->
+    <script type="text/javascript" src="../js/prop-types.js"></script>
+
+    <!--
+        非受控组件：现用现取，使用大量的ref
+        受控组件：组件变化时，自己将值刷新到状态里，其他组件使用时，只要从状态里取即可，没有大量的ref.
+    -->
+
+    <script type="text/babel"> /* 此处一定要写babel 才能是jsx，否则为js*/
+        // 创建类式组件
+        class Count extends React.Component {
+            constructor(props) {
+                console.log('Count-constructor')
+                super(props)
+                this.state = { count: 0, }
+            }
+            add = () => {
+                const { count } = this.state;
+                this.setState({
+                    count: count + 1,
+                })
+            }
+
+            death = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('test'));
+            }
+
+            force = () => {
+                this.forceUpdate();
+            }
+
+            componentWillMount() {
+                console.log('Count-componentWillMount')
+            }
+
+            componentDidMount() {
+                console.log('Count-componentDidMount')
+            }
+
+            componentWillUnMount() {
+                console.log('Count-componentWillUnMount')
+            }
+
+            // 过滤器，是否进行更新
+            shouldComponentUpdate() {
+                console.log('Count-shoudComponentUpdate')
+                return true;
+            }
+
+            // 组件将要更新
+            componentWillUpdate() {
+                console.log('Count-componentWillUpdate')
+            }
+
+            // 组件更新完毕
+            componentDidUpdate() {
+                console.log('Count-componentDidUpdate')
+            }
+
+
+
+            // 初始化渲染和状态更新调用 1+n
+            render() {
+                console.log('Count-render')
+                return (
+                    <div>
+                        <h2 >当前计数值：{this.state.count}</h2>
+                        <button onClick={this.add}>计数值+1</button>
+                        <button onClick={this.death}>卸载</button>
+                        <button onClick={this.force}>强制更新</button>
+                    </div>
+                )
+            }
+        }
+
+        class A extends React.Component {
+            state = { carName: "背驰" }
+
+            changeCar = () => {
+                this.setState({
+                    carName: "奥迪"
+                })
+            }
+            render() {
+                return (
+                    <div>
+                        <div>我是A组件</div>
+                        <button onClick={this.changeCar}>换车</button>
+                        <B carName={this.state.carName}/>
+                    </div>
+                )
+            }
+        }
+
+        class B extends React.Component {
+
+            // 初次是不调用的
+            componentWillReceiveProps(props){
+                console.log(props)
+                console.log("B---componentWillReceiveProps")
+            }
+            
+            render() {
+                return (
+                    <div>我是B组件，当前车为{this.props.carName}</div>
+                )
+            }
+        }
+        //渲染组件到页面
+        ReactDOM.render(<A />, document.getElementById('test'))
+
+    </script>
+</body>
+
+</html>
