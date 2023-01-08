@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Diagnosies protocol="TR181">
+    <DiagnosisMap>
+        <Diagnosis type="IPPing">
+            <RootPath>Device.IP.Diagnosis.IPPing.</RootPath>
+            <SetParameterList type="Set">
+                <Parameter name="Host" type="string" default="localhost">Device.IP.Diagnosis.IPPing.Host</Parameter>
+                <Parameter name="Timeout" type="int" default="100">Device.IP.Diagnosis.IPPing.Timeout</Parameter>
+            </SetParameterList>
+            <GetParameterList type="Get">
+                <Parameter name="SuccessCount" type="int">Device.IP.Diagnosis.IPPing.SuccessCount</Parameter>
+                <Parameter name="FailureCount" type="int">Device.IP.Diagnosis.IPPing.FailureCount</Parameter>
+            </GetParameterList>
+        </Diagnosis>
+        <Diagnosis type="TraceRoute">
+            <RootPath>Device.IP.Diagnosis.TraceRoute.</RootPath>
+            <SetParameterList>
+                <Parameter name="Host" type="string" default="localhost">Device.IP.Diagnosis.TraceRoute.Host</Parameter>
+                <Parameter name="Timeout" type="int" default="100">Device.IP.Diagnosis.TraceRoute.Timeout</Parameter>
+            </SetParameterList>
+            <GetParameterList>
+                <Parameter name="MaxHop" type="int">Device.IP.Diagnosis.TraceRoute.MaxHop</Parameter>
+                <Parameter name="ResponseTime" type="int">Device.IP.Diagnosis.TraceRoute.ResponseTime</Parameter>
+            </GetParameterList>
+        </Diagnosis>
+    </DiagnosisMap>
+</Diagnosies>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>结构伪类选择器</title>
+    <style>
+        /*ul的第一个子元素*/
+        ul li:first-child {
+            background: red;
+        }
+        /*ul的最后一个子元素*/
+        ul li:last-child {
+            background: blue;
+        }
+
+        /*选中p的父级元素的的第n个子元素，且这个元素是p元素才生效*/
+        /*n=1时不生效，应为是h1标签不是p标签，n=2时生效*/
+        p:nth-child(2) {
+            background: green;
+        }
+
+        /*选中p的父级元素下的第n个p元素*/
+        p:nth-of-type(2) {
+            background: brown;
+        }
+    </style>
+</head>
+<body>
+    <h1>h1</h1>
+    <p>p1</p>
+    <p>p2</p>
+    <p>p3</p>
+    <ul>
+        <li>li1</li>
+        <li>li2</li>
+        <li>li3</li>
+    </ul>
+</body>
+</html>
