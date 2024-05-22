@@ -1,4 +1,6 @@
 # hwLeaning
+
+···java
 public static void createToc(XWPFDocument document) {
         XWPFParagraph para = document.createParagraph();
         XWPFRun run = para.createRun();
@@ -44,3 +46,4 @@ public static void createToc(XWPFDocument document) {
                 "同日，国务院总理李克强致电祝贺范明政当选连任越南政府总理，表示愿同范明政总理一道努力，增进双方政治互信，夯实友好合作基础，加快发展战略对接，构建互利共赢格局，推动新时期中越关系不断向前发展。");
 
     }
+    ```
